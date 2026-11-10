@@ -1,0 +1,582 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fff0f3, #fbd5df);
+    font-family: Georgia, serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    color: #93485e;
+}
+
+/* CONTAINER */
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.titulo {
+    font-size: 30px;
+    color: #a64460;
+}
+
+.subtitulo {
+    font-size: 16px;
+    color: #bd7185;
+}
+
+/* ENVELOPE */
+
+.envelope-container {
+    width: 340px;
+    height: 230px;
+    margin-top: 35px;
+    perspective: 1000px;
+}
+
+.envelope {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    cursor: pointer;
+    transform-style: preserve-3d;
+}
+
+.parte-traseira {
+    position: absolute;
+    inset: 0;
+    background: #e9a7b8;
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.frente {
+    position: absolute;
+    inset: 0;
+    background: #f3c1ce;
+    clip-path: polygon(
+        0 0,
+        50% 65%,
+        100% 0,
+        100% 100%,
+        0 100%
+    );
+    z-index: 4;
+}
+
+.aba {
+    position: absolute;
+    inset: 0;
+    background: #d98da2;
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        50% 60%
+    );
+    transform-origin: top;
+    transition: transform 0.8s ease;
+    z-index: 6;
+}
+
+/* NOMES */
+
+.nomes {
+    position: absolute;
+    bottom: 13px;
+    left: 20px;
+    text-align: left;
+    font-size: 13px;
+    line-height: 21px;
+    color: #94465c;
+    z-index: 5;
+    transition: opacity 0.4s;
+}
+
+.nomes span {
+    font-weight: bold;
+}
+
+/* CORAÇÃO */
+
+.selo {
+    position: absolute;
+    top: 95px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 48px;
+    height: 48px;
+    background: #bd4565;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 29px;
+    box-shadow: 0 3px 8px #0002;
+    z-index: 7;
+    transition: opacity 0.4s;
+}
+
+/* PAPEL */
+
+.carta {
+    position: absolute;
+    width: 90%;
+    height: 190px;
+    left: 5%;
+    bottom: 10px;
+    z-index: 2;
+    background: #fffdf7;
+    border-radius: 4px;
+    padding: 15px;
+    overflow: hidden;
+
+    transition:
+        width 1s ease,
+        height 1s ease,
+        top 1s ease,
+        left 1s ease,
+        bottom 1s ease,
+        transform 1s ease;
+}
+
+.papel {
+    width: 100%;
+    min-height: 100%;
+    padding: 20px;
+    background-color: #fffdf7;
+
+    background-image: repeating-linear-gradient(
+        transparent,
+        transparent 31px,
+        #d9cbd0 32px
+    );
+}
+
+.papel h2 {
+    color: #b44e6b;
+    text-align: center;
+    font-size: 23px;
+    margin-bottom: 20px;
+}
+
+/* TEXTO DA CARTA */
+
+.texto-carta {
+    color: #634e50;
+    font-size: 15px;
+    line-height: 32px;
+    text-align: left;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+/* BOTÃO FECHAR */
+
+.fechar {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    background: #f4d4dc;
+    color: #a64460;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 30;
+}
+
+/* ANIMAÇÃO DA CARTA */
+
+.envelope.aberto .aba {
+    transform: rotateX(180deg);
+    z-index: 0;
+}
+
+.envelope.aberto .selo,
+.envelope.aberto .nomes {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.envelope.aberto .carta {
+    position: fixed;
+    width: min(520px, calc(100vw - 36px));
+    height: min(75vh, 580px);
+    top: 50%;
+    left: 50%;
+    bottom: auto;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    overflow-y: auto;
+    padding: 15px;
+    box-shadow: 0 15px 50px #6d344544;
+    border: 1px solid #e9d4d6;
+}
+
+.envelope.aberto .papel {
+    min-height: 100%;
+}
+
+.envelope.aberto .fechar {
+    display: block;
+}
+
+/* FUNDO QUANDO A CARTA ABRE */
+
+body:has(.envelope.aberto)::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: #6d344566;
+    backdrop-filter: blur(4px);
+    z-index: 1;
+}
+
+/* VARAL DE FOTOS */
+
+.varal-fotos {
+    position: fixed;
+    inset: 0;
+    z-index: 12;
+    pointer-events: none;
+}
+
+.polaroid {
+    position: absolute;
+    width: 112px;
+    height: 145px;
+    padding: 9px 9px 5px;
+    background: #fffefa;
+    box-shadow: 0 5px 15px #542c3533;
+    opacity: 0;
+    transform: translateY(-120vh) rotate(0deg);
+    transform-origin: top center;
+}
+
+/* POSIÇÃO DAS FOTOS */
+
+.polaroid-1 {
+    left: 3%;
+    top: 16%;
+    --rotacao: -8deg;
+    --atraso: 0.1s;
+}
+
+.polaroid-2 {
+    left: 3%;
+    top: 40%;
+    --rotacao: 6deg;
+    --atraso: 0.35s;
+}
+
+.polaroid-3 {
+    left: 3%;
+    top: 64%;
+    --rotacao: -5deg;
+    --atraso: 0.6s;
+}
+
+.polaroid-4 {
+    right: 3%;
+    top: 16%;
+    --rotacao: 7deg;
+    --atraso: 0.25s;
+}
+
+.polaroid-5 {
+    right: 3%;
+    top: 40%;
+    --rotacao: -6deg;
+    --atraso: 0.5s;
+}
+
+.polaroid-6 {
+    right: 3%;
+    top: 64%;
+    --rotacao: 5deg;
+    --atraso: 0.75s;
+}
+
+/* FIO */
+
+.fio {
+    position: absolute;
+    width: 1px;
+    height: 55px;
+    background: #b98c91;
+    left: 50%;
+    bottom: 100%;
+    transform: translateX(-50%);
+    box-shadow: 1px 0 2px #0002;
+}
+
+/* MOLDURA DA FOTO */
+
+.moldura-foto {
+    position: relative;
+    width: 100%;
+    height: 105px;
+    background: #f7edf0;
+    overflow: hidden;
+}
+
+.foto-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5px;
+    color: #c18b9a;
+    font-size: 12px;
+    background: linear-gradient(135deg, #fce9ee, #f8dce4);
+}
+
+.foto-real {
+    display: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.legenda {
+    display: block;
+    text-align: center;
+    color: #c36b83;
+    font-size: 17px;
+    margin-top: 4px;
+}
+
+/* QUEDA DAS POLAROIDS */
+
+body.carta-aberta .polaroid {
+    animation:
+        cair 1.2s ease-out var(--atraso) forwards,
+        balancar 3s ease-in-out calc(var(--atraso) + 1.2s) infinite;
+}
+
+@keyframes cair {
+    0% {
+        opacity: 0;
+        transform: translateY(-120vh) rotate(0deg);
+    }
+
+    75% {
+        opacity: 1;
+        transform: translateY(12px) rotate(calc(var(--rotacao) * 1.3));
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotate(var(--rotacao));
+    }
+}
+
+@keyframes balancar {
+    0%, 100% {
+        transform: rotate(var(--rotacao));
+    }
+
+    50% {
+        transform: rotate(calc(var(--rotacao) + 4deg));
+    }
+}
+
+/* RECOLHER AS POLAROIDS */
+
+body.recolhendo .polaroid {
+    animation: recolher 0.8s ease-in forwards !important;
+    animation-delay: 0s !important;
+}
+
+@keyframes recolher {
+    0% {
+        opacity: 1;
+        transform: translateY(0) rotate(var(--rotacao));
+    }
+
+    30% {
+        opacity: 1;
+        transform: translateY(-15px) rotate(0deg);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-120vh) rotate(0deg);
+    }
+}
+
+/* INSTRUÇÃO */
+
+.instrucao {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #a75b70;
+}
+
+/* BOTÃO DE MÚSICA */
+
+.botao-musica {
+    margin-top: 10px;
+    padding: 11px 22px;
+    border: 1px solid #d98da2;
+    border-radius: 30px;
+    background: #fff7f8;
+    color: #a64460;
+    font-family: Georgia, serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.botao-musica:hover {
+    background: #f4c6d2;
+    transform: scale(1.05);
+}
+
+/* CORAÇÕES FLUTUANTES */
+
+.coracoes {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.coracao-flutuante {
+    position: absolute;
+    bottom: -40px;
+    color: #df8099;
+    opacity: 0;
+    animation: subir 7s linear forwards;
+}
+
+@keyframes subir {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 0.7;
+    }
+
+    85% {
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: translateY(-110vh) rotate(40deg);
+        opacity: 0;
+    }
+}
+
+/* CELULAR */
+
+@media (max-width: 600px) {
+
+    .titulo {
+        font-size: 25px;
+    }
+
+    .subtitulo {
+        font-size: 14px;
+    }
+
+    .envelope-container {
+        width: min(320px, 90vw);
+    }
+
+    .texto-carta {
+        font-size: 14px;
+        line-height: 29px;
+    }
+
+    .envelope.aberto .carta {
+        width: calc(100vw - 120px);
+        height: 75vh;
+        padding: 8px;
+    }
+
+    .envelope.aberto .papel {
+        padding: 14px 8px;
+    }
+
+    .envelope.aberto .papel h2 {
+        font-size: 19px;
+    }
+
+    .polaroid {
+        width: 48px;
+        height: 76px;
+        padding: 4px 4px 2px;
+    }
+
+    .moldura-foto {
+        height: 53px;
+    }
+
+    .foto-placeholder {
+        font-size: 7px;
+        padding: 2px;
+    }
+
+    .legenda {
+        font-size: 10px;
+        margin-top: 1px;
+    }
+
+    .fio {
+        height: 30px;
+    }
+
+    .polaroid-1,
+    .polaroid-2,
+    .polaroid-3 {
+        left: 2%;
+    }
+
+    .polaroid-4,
+    .polaroid-5,
+    .polaroid-6 {
+        right: 2%;
+    }
+
+    .polaroid-1,
+    .polaroid-4 {
+        top: 16%;
+    }
+
+    .polaroid-2,
+    .polaroid-5 {
+        top: 43%;
+    }
+
+    .polaroid-3,
+    .polaroid-6 {
+        top: 70%;
+    }
+}
